@@ -9,39 +9,36 @@ interface Result {
 }
 
 const calculateExercises = (hours: number[], target: number): Result => {
-    const periodLength = hours.length;
-    const trainingDays = hours.filter(hour => hour > 0).length;
-    const totalHours = hours.reduce((sum, hour) => sum + hour, 0);
-    const average = totalHours / periodLength;
-    const success = average >= target;
+  const periodLength = hours.length;
+  const trainingDays = hours.filter(hour => hour > 0).length;
+  const totalHours = hours.reduce((sum, hour) => sum + hour, 0);
+  const average = totalHours / periodLength;
+  const success = average >= target;
 
-    let rating = 1;
+  let rating = 1;
 
-    if (average >= target) {
+  if (average >= target) {
     rating = 3;
-    } else if (average >= target * 0.5) {
+  } else if (average >= target * 0.5) {
     rating = 2;
-    }
+  }
 
-    let ratingDescription = '';
+  const ratingDescription =
+    rating === 3
+      ? 'great'
+      : rating === 2
+        ? 'not too bad but could be better'
+        : 'bad';
 
-    if (rating === 3) {
-    ratingDescription = 'great';
-    } else if (rating === 2) {
-    ratingDescription = 'not too bad but could be better';
-    } else {
-    ratingDescription = 'bad';
-    }
-
-    return {
-        periodLength,
-        trainingDays,
-        success,
-        rating,
-        ratingDescription,
-        target,
-        average
-    };
+  return {
+    periodLength,
+    trainingDays,
+    success,
+    rating,
+    ratingDescription,
+    target,
+    average
+  };
 };
 
 try {
@@ -55,7 +52,7 @@ try {
 
   if (hours.length === 0) {
     throw new Error('No exercise hours provided');
-    }
+  }
 
   if (hours.some(hour => isNaN(hour))) {
     throw new Error('Provided values were not numbers!');

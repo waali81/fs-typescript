@@ -44,4 +44,26 @@ const calculateExercises = (hours: number[], target: number): Result => {
     };
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+try {
+  const target = Number(process.argv[2]);
+
+  if (isNaN(target)) {
+    throw new Error('Target must be a number');
+  }
+
+  const hours = process.argv.slice(3).map(Number);
+
+  if (hours.length === 0) {
+    throw new Error('No exercise hours provided');
+    }
+
+  if (hours.some(hour => isNaN(hour))) {
+    throw new Error('Provided values were not numbers!');
+  }
+
+  console.log(calculateExercises(hours, target));
+} catch (error: unknown) {
+  if (error instanceof Error) {
+    console.log('Something went wrong:', error.message);
+  }
+}

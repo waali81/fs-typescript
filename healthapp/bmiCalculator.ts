@@ -16,4 +16,17 @@ const calculateBmi = (height: number, weight: number): string => {
     return 'Obese';
 };
 
-console.log(calculateBmi(175, 70));
+try {
+  const height = Number(process.argv[2]);
+  const weight = Number(process.argv[3]);
+
+  if (isNaN(height) || isNaN(weight)) {
+    throw new Error('Provided values were not numbers!');
+  }
+
+  console.log(calculateBmi(height, weight));
+} catch (error: unknown) {
+  if (error instanceof Error) {
+    console.log('Something went wrong:', error.message);
+  }
+}

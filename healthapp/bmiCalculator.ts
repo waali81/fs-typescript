@@ -1,4 +1,4 @@
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
     const bmi = weight / (height / 100) ** 2;
 
     if (bmi < 18.5) {
@@ -16,17 +16,19 @@ const calculateBmi = (height: number, weight: number): string => {
     return 'Obese';
 };
 
-try {
-  const height = Number(process.argv[2]);
-  const weight = Number(process.argv[3]);
+if (process.argv[1] === import.meta.filename) {
+  try {
+    const height = Number(process.argv[2]);
+    const weight = Number(process.argv[3]);
 
-  if (isNaN(height) || isNaN(weight)) {
-    throw new Error('Provided values were not numbers!');
-  }
+    if (isNaN(height) || isNaN(weight)) {
+      throw new Error('Provided values were not numbers!');
+    }
 
-  console.log(calculateBmi(height, weight));
-} catch (error: unknown) {
-  if (error instanceof Error) {
-    console.log('Something went wrong:', error.message);
+    console.log(calculateBmi(height, weight));
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.log('Something went wrong:', error.message);
+    }
   }
 }

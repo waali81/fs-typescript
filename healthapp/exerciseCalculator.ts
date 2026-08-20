@@ -40,27 +40,28 @@ export const calculateExercises = (hours: number[], target: number): Result => {
     average
   };
 };
+if (process.argv[1] === import.meta.filename) {
+  try {
+    const target = Number(process.argv[2]);
 
-try {
-  const target = Number(process.argv[2]);
+    if (isNaN(target)) {
+      throw new Error('Target must be a number');
+    }
 
-  if (isNaN(target)) {
-    throw new Error('Target must be a number');
-  }
+    const hours = process.argv.slice(3).map(Number);
 
-  const hours = process.argv.slice(3).map(Number);
+    if (hours.length === 0) {
+      throw new Error('No exercise hours provided');
+    }
 
-  if (hours.length === 0) {
-    throw new Error('No exercise hours provided');
-  }
+    if (hours.some(hour => isNaN(hour))) {
+      throw new Error('Provided values were not numbers!');
+    }
 
-  if (hours.some(hour => isNaN(hour))) {
-    throw new Error('Provided values were not numbers!');
-  }
-
-  console.log(calculateExercises(hours, target));
-} catch (error: unknown) {
-  if (error instanceof Error) {
-    console.log('Something went wrong:', error.message);
+    console.log(calculateExercises(hours, target));
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.log('Something went wrong:', error.message);
+    }
   }
 }

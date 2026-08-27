@@ -70,18 +70,98 @@ const App = () => {
 
         <div>
           Weather:
-          <input
-            value={weather}
-            onChange={(event) => setWeather(event.target.value)}
-          />
+          <label>
+            <input
+              type="radio"
+              value="sunny"
+              checked={weather === 'sunny'}
+              onChange={(event) => setWeather(event.target.value)}
+            />
+            sunny
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              value="rainy"
+              checked={weather === 'rainy'}
+              onChange={(event) => setWeather(event.target.value)}
+            />
+            rainy
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              value="cloudy"
+              checked={weather === 'cloudy'}
+              onChange={(event) => setWeather(event.target.value)}
+            />
+            cloudy
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              value="stormy"
+              checked={weather === 'stormy'}
+              onChange={(event) => setWeather(event.target.value)}
+            />
+            stormy
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              value="windy"
+              checked={weather === 'windy'}
+              onChange={(event) => setWeather(event.target.value)}
+            />
+            windy
+          </label>
         </div>
 
         <div>
           Visibility:
-          <input
-            value={visibility}
-            onChange={(event) => setVisibility(event.target.value)}
-          />
+          <label>
+            <input
+              type="radio"
+              value="great"
+              checked={visibility === 'great'}
+              onChange={(event) => setVisibility(event.target.value)}
+            />
+            great
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              value="good"
+              checked={visibility === 'good'}
+              onChange={(event) => setVisibility(event.target.value)}
+            />
+            good
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              value="ok"
+              checked={visibility === 'ok'}
+              onChange={(event) => setVisibility(event.target.value)}
+            />
+            ok
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              value="poor"
+              checked={visibility === 'poor'}
+              onChange={(event) => setVisibility(event.target.value)}
+            />
+            poor
+          </label>
         </div>
 
         <div>

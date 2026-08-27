@@ -8,6 +8,7 @@ const App = () => {
   const [weather, setWeather] = useState('');
   const [visibility, setVisibility] = useState('');
   const [comment, setComment] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     axios.get<DiaryEntry[]>('/api/diaries').then(response => {
@@ -25,12 +26,37 @@ const App = () => {
       comment
     }).then(response => {
       setDiaries(diaries.concat(response.data));
+      setDate('');
+      setWeather('');
+      setVisibility('');
+      setComment('');
+      setError('');
+    }).catch(error => {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data.error[0];
+        const field = errorMessage.path[0];
+
+        const value =
+          field === 'weather' ? weather :
+          field === 'visibility' ? visibility :
+          date;
+
+        setError(
+          value
+            ? `Error: Incorrect ${field}: ${value}`
+            : `Error: Incorrect ${field}`
+        );
+      } else {
+        setError('Unknown error');
+      }
     });
   };
 
   return (
     <div>
-      <h2>Add new diary entry</h2>
+      <h2>Add new diary entry:</h2>
+
+      {error && <p>{error}</p>}
 
       <form onSubmit={addDiary}>
         <div>
@@ -69,10 +95,14 @@ const App = () => {
         <button type="submit">Add</button>
       </form>
 
+      <h3>Diary entries:</h3>
+
       {diaries.map(diary => (
-        <p key={diary.id}>
-          {diary.date} {diary.weather} {diary.visibility}
-        </p>
+        <div key={diary.id}>
+          <h4>{diary.date}</h4>
+          <div>Weather: {diary.weather}</div>
+          <div>Visibility: {diary.visibility}</div>
+        </div>
       ))}
     </div>
   );

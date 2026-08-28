@@ -1,42 +1,3 @@
-/* import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
-import patientService from "../../services/patients";
-import { Patient } from "../../types";
-
-const PatientPage = () => {
-  const [patient, setPatient] = useState<Patient>();
-
-  const { id } = useParams<{ id: string }>();
-
-  useEffect(() => {
-    if (!id) {
-      return;
-    }
-
-    const fetchPatient = async () => {
-      const patient = await patientService.getOne(id);
-      setPatient(patient);
-    };
-
-    void fetchPatient();
-  }, [id]);
-
-  if (!patient) {
-    return <div>Patient not found</div>;
-  }
-
-  return (
-    <div>
-      <h2>{patient.name}</h2>
-      <p>Occupation: {patient.occupation}</p>
-      <p>SSN: {patient.ssn}</p>
-      <p>Date of birth: {patient.dateOfBirth}</p>
-    </div>
-  );
-};
-
-export default PatientPage; */
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -101,7 +62,7 @@ const PatientPage = () => {
 
       <Card>
         <CardContent>
-          <Typography variant="h6" sx={{ mb: 2 }}>
+          <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
             Personal informations:
           </Typography>
 
@@ -135,6 +96,48 @@ const PatientPage = () => {
           </Stack>
         </CardContent>
       </Card>
+      
+      <Typography variant="h6" fontWeight="bold" sx={{ mt: 4, mb: 2 }}>
+        Entries
+      </Typography>
+
+      <Stack spacing={2}>
+        {patient.entries.map((entry) => (
+          <Card key={entry.id}>
+            <CardContent>
+              <Typography fontWeight="bold" variant="subtitle1">
+                {entry.date}
+              </Typography>
+              <Box sx={{ mt: 1 }}>
+                <Typography fontWeight="bold">
+                  Description:
+                </Typography>
+
+                <Typography sx={{ mt: 0.5 }}>
+                  {entry.description}
+                </Typography>
+              </Box>
+
+              {entry.diagnosisCodes && (
+                <Box sx={{ mt: 1 }}>
+                  <Typography fontWeight="bold">
+                    Diagnosis codes:
+                  </Typography>
+                  <Box component="ul" sx={{ mt: 0.5, mb: 0, pl: 5 }}>
+                    {entry.diagnosisCodes.map((code) => (
+                      <li key={code}>
+                        <Typography component="span">
+                          {code}
+                        </Typography>
+                      </li>
+                    ))}
+                  </Box>
+                </Box>
+              )}
+            </CardContent>
+          </Card>
+        ))}
+      </Stack>
     </Box>
   );
 };

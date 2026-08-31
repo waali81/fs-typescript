@@ -14,6 +14,7 @@ import { Patient, Diagnosis } from "../../types";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import TransgenderIcon from "@mui/icons-material/Transgender";
+import EntryDetails from "../EntryDetails";
 
 interface Props {
   diagnoses: Diagnosis[];
@@ -144,7 +145,7 @@ const PatientPage = ({diagnoses}: Props) => {
                   </Box>
                 </Box>
               )}
-
+              <EntryDetails entry={entry} />
 
             </CardContent>
           </Card>

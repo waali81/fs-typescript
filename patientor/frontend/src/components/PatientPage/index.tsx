@@ -10,12 +10,17 @@ import {
 } from "@mui/material";
 
 import patientService from "../../services/patients";
-import { Patient } from "../../types";
+import { Patient, Diagnosis } from "../../types";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 
-const PatientPage = () => {
+interface Props {
+  diagnoses: Diagnosis[];
+}
+
+
+const PatientPage = ({diagnoses}: Props) => {
   const [patient, setPatient] = useState<Patient>();
 
   const { id } = useParams<{ id: string }>();
@@ -117,23 +122,30 @@ const PatientPage = () => {
                   {entry.description}
                 </Typography>
               </Box>
-
+              
               {entry.diagnosisCodes && (
                 <Box sx={{ mt: 1 }}>
                   <Typography fontWeight="bold">
                     Diagnosis codes:
                   </Typography>
+
                   <Box component="ul" sx={{ mt: 0.5, mb: 0, pl: 5 }}>
-                    {entry.diagnosisCodes.map((code) => (
-                      <li key={code}>
-                        <Typography component="span">
-                          {code}
-                        </Typography>
-                      </li>
-                    ))}
+                    {entry.diagnosisCodes.map((code) => {
+                      const diagnosis = diagnoses.find(d => d.code === code);
+
+                      return (
+                        <li key={code}>
+                          <Typography component="span">
+                            {code} {diagnosis ? `- ${diagnosis.name}` : ""}
+                          </Typography>
+                        </li>
+                      );
+                    })}
                   </Box>
                 </Box>
               )}
+
+
             </CardContent>
           </Card>
         ))}

@@ -98,29 +98,6 @@ const EntryDetails = ({ entry }: Props) => {
             </Stack>
         );
 
-/*     case "HealthCheck":
-      return (
-        <Stack spacing={1}>
-          <Box>
-            <Typography component="span" fontWeight="bold">
-              Health check rating:{" "}
-            </Typography>
-            <Typography component="span">
-              {entry.healthCheckRating}
-            </Typography>
-          </Box>
-
-          <Box>
-            <Typography component="span" fontWeight="bold">
-              Specialist:{" "}
-            </Typography>
-            <Typography component="span">
-              {entry.specialist}
-            </Typography>
-          </Box>
-        </Stack>
-      ); */
-
     default:
       return assertNever(entry);
   }

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -7,14 +8,17 @@ import {
   Divider,
   Stack,
   Typography,
+  Button,
 } from "@mui/material";
 
 import patientService from "../../services/patients";
-import { Patient, Diagnosis } from "../../types";
+import { Patient, Diagnosis, EntryWithoutId } from "../../types";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 import EntryDetails from "../EntryDetails";
+import AddEntryForm from "../AddEntryForm";
+import entryService from "../../services/entries";
 
 interface Props {
   diagnoses: Diagnosis[];
@@ -23,8 +27,9 @@ interface Props {
 
 const PatientPage = ({diagnoses}: Props) => {
   const [patient, setPatient] = useState<Patient>();
-
+  const [showAddEntryForm, setShowAddEntryForm] = useState(false);
   const { id } = useParams<{ id: string }>();
+  const [error, setError] = useState<string>();
 
   useEffect(() => {
     if (!id) {
@@ -38,6 +43,46 @@ const PatientPage = ({diagnoses}: Props) => {
 
     void fetchPatient();
   }, [id]);
+
+  const handleAddEntry = async (values: EntryWithoutId) => {
+    if (!id) {
+      return;
+    }
+
+    try {
+      const addedEntry = await entryService.create(id, values);
+
+      setPatient((currentPatient) => {
+        if (!currentPatient) {
+          return currentPatient;
+        }
+
+        return {
+          ...currentPatient,
+          entries: currentPatient.entries.concat(addedEntry),
+        };
+      });
+
+      setShowAddEntryForm(false);
+      setError(undefined);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const validationErrors = error.response?.data?.error;
+
+        if (validationErrors && validationErrors.length > 0) {
+          const firstError = validationErrors[0];
+
+          setError(
+            `${firstError.path.join(".")}: ${firstError.message}`
+          );
+        } else {
+          setError("Adding entry failed");
+        }
+      } else {
+        setError("Adding entry failed");
+      }
+    }
+  };
 
   if (!patient) {
     return (
@@ -103,9 +148,35 @@ const PatientPage = ({diagnoses}: Props) => {
         </CardContent>
       </Card>
       
-      <Typography variant="h6" fontWeight="bold" sx={{ mt: 4, mb: 2 }}>
-        Entries
-      </Typography>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ mt: 4, mb: 2 }}
+      >
+        <Typography variant="h6" fontWeight="bold">
+          Entries
+        </Typography>
+
+        <Button
+          variant="contained"
+          onClick={() => setShowAddEntryForm(true)}
+        >
+          Add entry
+        </Button>
+      </Stack>
+
+      {showAddEntryForm && (
+        <Card sx={{ mb: 2 }}>
+          <CardContent>
+            <AddEntryForm
+              onSubmit={handleAddEntry}
+              onCancel={() => setShowAddEntryForm(false)}
+              error={error}
+            />
+          </CardContent>
+        </Card>
+      )}
 
       <Stack spacing={2}>
         {patient.entries.map((entry) => (

@@ -7,10 +7,10 @@ interface Props {
 
 const HealthCheckRating = ({ rating }: Props) => {
   const colors = [
-    "success.main",
-    "warning.main",
-    "warning.dark",
-    "error.main",
+    "#81c784",
+    "#fdd835",
+    "#ef6c00",
+    "#e53935",
   ];
 
   const labels = [

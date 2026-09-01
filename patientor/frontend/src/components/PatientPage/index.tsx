@@ -50,18 +50,10 @@ const PatientPage = ({diagnoses}: Props) => {
     }
 
     try {
-      const addedEntry = await entryService.create(id, values);
-
-      setPatient((currentPatient) => {
-        if (!currentPatient) {
-          return currentPatient;
-        }
-
-        return {
-          ...currentPatient,
-          entries: currentPatient.entries.concat(addedEntry),
-        };
-      });
+      await entryService.create(id, values);
+      
+      const updatedPatient = await patientService.getOne(id);
+      setPatient(updatedPatient);
 
       setShowAddEntryForm(false);
       setError(undefined);
@@ -158,12 +150,14 @@ const PatientPage = ({diagnoses}: Props) => {
           Entries
         </Typography>
 
-        <Button
-          variant="contained"
-          onClick={() => setShowAddEntryForm(true)}
-        >
-          Add entry
-        </Button>
+        {!showAddEntryForm && (
+          <Button
+            variant="contained"
+            onClick={() => setShowAddEntryForm(true)}
+          >
+            Add New Entry
+          </Button>
+        )}
       </Stack>
 
       {showAddEntryForm && (

@@ -170,6 +170,7 @@ const PatientPage = ({diagnoses}: Props) => {
         <Card sx={{ mb: 2 }}>
           <CardContent>
             <AddEntryForm
+              diagnoses={diagnoses}
               onSubmit={handleAddEntry}
               onCancel={() => setShowAddEntryForm(false)}
               error={error}
